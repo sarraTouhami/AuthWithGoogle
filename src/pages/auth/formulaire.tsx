@@ -6,7 +6,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 const EditUserProfile = () => {
   const { data: session } = useSession();
   const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState(""); // State for success message
+  const [successMessage, setSuccessMessage] = useState(""); 
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -87,7 +87,7 @@ const EditUserProfile = () => {
       return;
     }
     setError("");
-    setSuccessMessage("Changes saved successfully!"); // Display success message
+    setSuccessMessage("Changes saved successfully!"); 
     console.log("Saved data:", formData);
   };
 
@@ -97,7 +97,7 @@ const EditUserProfile = () => {
         <div className="card-body">
           <h1 className="mb-4 text-center" style={{ color: '#ff4757' }}>Edit User Information</h1>
           {error && <p style={{ color: 'red' }}>{error}</p>}
-          {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>} {/* Display success message */}
+          {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>} 
           <form onSubmit={handleSubmit}>
             <div className="row mb-3">
               <div className="col-md-6">
@@ -167,7 +167,6 @@ const EditUserProfile = () => {
   );
 };
 
-// Wrap the component with SessionProvider locally
 const FormulairePage = (props) => (
   <SessionProvider>
     <EditUserProfile {...props} />

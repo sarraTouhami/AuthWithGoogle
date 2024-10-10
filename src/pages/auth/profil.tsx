@@ -1,12 +1,11 @@
 // pages/auth/profil.tsx
-import { getSession } from "next-auth/react"; // Import getSession
+import { getSession } from "next-auth/react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const UserProfile = ({ session }) => {
-  // Check if the session exists
   if (!session || !session.user) {
-    return <p>Loading...</p>; // Loading message if the session is not yet available
+    return <p>Loading...</p>; 
   }
 
   // Retrieve user data
@@ -19,10 +18,9 @@ const UserProfile = ({ session }) => {
           <h1 className="mb-4" style={{ color: '#ff4d4d' }}>User Profile</h1>
           <p><strong>Name:</strong> {name}</p>
           <p><strong>Email:</strong> {email}</p>
-          <p><strong>Date of Birth:</strong> {/* Add date of birth here, if available */}</p>
-          <p><strong>Address:</strong> {/* Add address here, if available */}</p>
-          <p><strong>Phone Number:</strong> {/* Add phone number here, if available */}</p>
-          {/* Add other user information here if needed */}
+          <p><strong>Date of Birth:</strong> </p>
+          <p><strong>Address:</strong></p>
+          <p><strong>Phone Number:</strong></p>
           <a href="/auth/formulaire" className="btn btn-outline-danger mt-3" style={{ borderRadius: '25px' }}>
             <i className="bi bi-pencil me-2"></i>Edit Profile
           </a>
@@ -32,12 +30,11 @@ const UserProfile = ({ session }) => {
   );
 };
 
-// Fetch the session on the server side
 export async function getServerSideProps(context) {
-  const session = await getSession(context); // Retrieve the session
+  const session = await getSession(context); 
 
   return {
-    props: { session }, // Pass the session as a prop
+    props: { session },
   };
 }
 
