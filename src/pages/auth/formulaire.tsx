@@ -28,15 +28,15 @@ const EditUserProfile = () => {
     }
   }, [session]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
-  };
+  };  
 
-  const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
-    const R = 6371;
+  const getDistanceFromLatLonInKm = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+    const R = 6371; // Rayon de la Terre en km
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const a =
@@ -47,7 +47,7 @@ const EditUserProfile = () => {
     return R * c;
   };
 
-  const validateAddress = async (address) => {
+  const validateAddress = async (address: string) => {
     try {
       const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(address)}`);
       const data = await response.json();
@@ -63,45 +63,45 @@ const EditUserProfile = () => {
         const distance = getDistanceFromLatLonInKm(userLat, userLon, parisLat, parisLon);
 
         if (distance > 50) {
-          setError("The address must be located within 50 km of Paris.");
+          setError("L'adresse doit être située dans un rayon de 50 km de Paris.");
           return false;
         }
 
         return true;
       } else {
-        setError("Address not found.");
+        setError("Adresse non trouvée.");
         return false;
       }
     } catch (err) {
-      console.error("Error while validating the address:", err);
-      setError("Error while validating the address.");
+      console.error("Erreur lors de la validation de l'adresse :", err);
+      setError("Erreur lors de la validation de l'adresse.");
       return false;
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const isValidAddress = await validateAddress(formData.address);
     if (!isValidAddress) {
-      setError("The address must be located within 50 km of Paris.");
+      setError("L'adresse doit être située dans un rayon de 50 km de Paris.");
       return;
     }
     setError("");
-    setSuccessMessage("Changes saved successfully!"); 
-    console.log("Saved data:", formData);
+    setSuccessMessage("Modifications enregistrées avec succès !");
+    console.log("Données enregistrées :", formData);
   };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100" style={{ background: 'linear-gradient(135deg, #ff4757, #ff6b81)' }}>
       <div className="card shadow-lg p-4" style={{ width: '600px', borderRadius: '12px' }}>
         <div className="card-body">
-          <h1 className="mb-4 text-center" style={{ color: '#ff4757' }}>Edit User Information</h1>
+          <h1 className="mb-4 text-center" style={{ color: '#ff4757' }}>Modifier les informations de l&apos;utilisateur</h1>
           {error && <p style={{ color: 'red' }}>{error}</p>}
           {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>} 
           <form onSubmit={handleSubmit}>
             <div className="row mb-3">
               <div className="col-md-6">
-                <label className="form-label">Last Name:</label>
+                <label className="form-label">Nom :</label>
                 <input
                   type="text"
                   className="form-control"
@@ -111,7 +111,7 @@ const EditUserProfile = () => {
                 />
               </div>
               <div className="col-md-6">
-                <label className="form-label">First Name:</label>
+                <label className="form-label">Prénom :</label>
                 <input
                   type="text"
                   className="form-control"
@@ -124,7 +124,7 @@ const EditUserProfile = () => {
 
             <div className="row mb-3">
               <div className="col-md-6">
-                <label className="form-label">Date of Birth:</label>
+                <label className="form-label">Date de naissance :</label>
                 <input
                   type="date"
                   className="form-control"
@@ -134,7 +134,7 @@ const EditUserProfile = () => {
                 />
               </div>
               <div className="col-md-6">
-                <label className="form-label">Address:</label>
+                <label className="form-label">Adresse :</label>
                 <input
                   type="text"
                   className="form-control"
@@ -146,7 +146,7 @@ const EditUserProfile = () => {
             </div>
 
             <div className="mb-3">
-              <label className="form-label">Phone Number:</label>
+              <label className="form-label">Numéro de téléphone :</label>
               <input
                 type="tel"
                 className="form-control"
@@ -158,7 +158,7 @@ const EditUserProfile = () => {
 
             <button type="submit" className="btn btn-outline-danger w-100" style={{ borderRadius: '25px' }}>
               <i className="bi bi-save me-2"></i>
-              Save Changes
+              Enregistrer les modifications
             </button>
           </form>
         </div>
@@ -167,7 +167,11 @@ const EditUserProfile = () => {
   );
 };
 
-const FormulairePage = (props) => (
+interface FormulaireProps {
+  [key: string]: unknown; // Autorise toutes les valeurs
+}
+
+const FormulairePage = (props: FormulaireProps) => (
   <SessionProvider>
     <EditUserProfile {...props} />
   </SessionProvider>
